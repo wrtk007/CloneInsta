@@ -1,1 +1,0 @@
-# 앞으로 작성할 view에서 필요한 라이브러리들은 해당 파일에 import하고 각 view들은 common.py를 통해서 import

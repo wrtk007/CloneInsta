@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'photo.apps.PhotoConfig', #photo>apps.py>PhotoConfig 클래스
     'accounts.apps.AccountsConfig',
+    'disqus',
+    'django.contrib.sites'
 ]
 
 MIDDLEWARE = [
@@ -126,3 +128,6 @@ MEDIA_URL = '/res/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 LOGIN_REDIRECT_URL = '/'
+
+DISQUS_WEBSITE_SHORTNAME = 'djangostagramtk'
+SITE_ID = 1

@@ -6,6 +6,11 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 from .models import Photo
+
+#icon 추가용
+from django.views.generic.base import View
+from django.http import HttpResponseForbidden
+from urllib.parse import urlparse
 # Create your views here.
 
 class PhotoList(ListView) :
@@ -57,3 +62,35 @@ class PhotoDetail(DetailView) :
     model = Photo
     template_name_suffix = '_detail'
 
+#좋아요 view
+class PhotoLike(View) :
+    def get(self, request, *args, **kwargs) : #get 방식으로 왔을 때
+        if not request.user.is_authenticated : #로그인 확인
+            return HttpResponseForbidden(); #자료 숨기기
+        else :
+            if 'photo_id' in kwargs : 
+                photo_id = kwargs['photo_id'] #photo_id를 확인
+                photo = Photo.objects.get(pk=photo_id) #primary key 가지도록
+                user = request.user 
+                if user in photo.like.all() : #이미 user가 좋아요 한 사람에 있으면
+                    photo.like.remove(user) #클릭했을 때 지움
+                else : #user 가 좋아요 아직 안눌렀으면
+                    photo.like.add(user) #유저 추가
+            referer_url = request.META.get('HTTP_REFERER')
+            path = urlparse(referer_url).path
+            return HttpResponseRedirect(path)
+
+class PhotoFavorite(View) :
+    def get(self, request, *args, **kwargs) :
+        if not request.user.is_authenticated :
+            return HttpResponseForbidden()
+        else :
+            if 'photo_id' in kwargs :
+                photo_id = kwargs['photo_id']
+                photo = Photo.objects.get(pk = photo_id)
+                user = request.user
+                if user in photo.favorite.all() :
+                    photo.favorite.remove(user)
+                else :
+                    photo.favorite.add(user)
+            return HttpResponseRedirect('/')

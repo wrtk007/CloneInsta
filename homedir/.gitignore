@@ -1,7 +1,9 @@
-*.log
-*.pot
-*.pyc
-__pycache__/
-local_settings.py
+*.pvc
+*~
+/ind
+/.vscode
+/dstagramproject
+/vote
+__pycahce__
 db.sqlite3
-media
+.DS_Store

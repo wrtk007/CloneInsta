@@ -21,12 +21,15 @@ BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'vl%9yf3*!3tk3!#11lf3@nw0&0v%*)!-f#!gejk#dqe-p2j=(r'
+# SECRET_KEY = 'vl%9yf3*!3tk3!#11lf3@nw0&0v%*)!-f#!gejk#dqe-p2j=(r'
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'vl%9yf3*!3tk3!#11lf3@nw0&0v%*)!-f#!gejk#dqe-p2j=(r')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# DEBUG = True
+DEBUG = bool(os.environ.get('DJNAGO_DEBUG', True))
 
-ALLOWED_HOSTS = ['localhost']
+
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -41,10 +44,12 @@ INSTALLED_APPS = [
     'photo.apps.PhotoConfig', #photo>apps.py>PhotoConfig 클래스
     'accounts.apps.AccountsConfig',
     'disqus',
-    'django.contrib.sites'
+    'django.contrib.sites',
+    'widget_tweaks'
 ]
 
 MIDDLEWARE = [
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -131,3 +136,7 @@ LOGIN_REDIRECT_URL = '/'
 
 DISQUS_WEBSITE_SHORTNAME = 'djangostagramtk'
 SITE_ID = 1
+
+import dj_database_url 
+db_from_env = dj_database_url.config(conn_max_age=500) 
+DATABASES['default'].update(db_from_env)

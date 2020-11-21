@@ -1,6 +1,6 @@
 from django.urls import path
 from django.urls import conf
-from .views import PhotoCreate, PhotoLike, PhotoList, PhotoDelete, PhotoDetail, PhotoUpdate, PhotoCreate, PhotoFavorite
+from .views import PhotoCreate, PhotoLike, PhotoList, PhotoDelete, PhotoDetail, PhotoMyList, PhotoUpdate, PhotoCreate, PhotoFavorite, PhotoLikeList, PhotoFavoriteList, PhotoMyList
 
 app_name = "photo"
 urlpatterns = [
@@ -10,6 +10,9 @@ urlpatterns = [
     path("delete/<int:pk>", PhotoDelete.as_view(), name='delete'),
     path("update/<int:pk>", PhotoUpdate.as_view(), name='update'),
     path("detail/<int:pk>", PhotoDetail.as_view(), name='detail'),
+    path("like/", PhotoLikeList.as_view(), name="like_list"),
+    path("favorite/", PhotoFavoriteList.as_view(), name="favorite_list"),
+    path("mylist/", PhotoMyList.as_view(), name="mylist"),
     path("", PhotoList.as_view(), name='index'),
 ]
 
